@@ -8,20 +8,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
         run: pip install espn-api pandas
 
-      - name: Run score tracker twice with 15s pause
+      - name: Run score tracker 3 times over 5 minutes
         run: |
           python score_tracker.py
-          sleep 15
+          sleep 150   # wait 2.5 minutes
+          python score_tracker.py
+          sleep 150   # wait another 2.5 minutes
           python score_tracker.py
 
       - name: Upload scores.csv
