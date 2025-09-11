@@ -1,0 +1,35 @@
+name: Track Fantasy Scores
+
+on:
+  schedule:
+    # Runs every 30 minutes during Sunday + Monday (game windows)
+    - cron: "*/30 * * * 0,1"
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  run-tracker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install espn-api
+
+      - name: Run score tracker
+        run: |
+          python score_tracker.py
+
+      - name: Commit updated scores
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add scores.csv
+          git commit -m "Update scores [skip ci]" || echo "No changes to commit"
+          git push
