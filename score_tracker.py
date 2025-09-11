@@ -14,7 +14,7 @@ if not espn_s2 or not swid:
         espn_s2 = config["espn_s2"]
         swid = config["swid"]
 
-league = League(league_id=123456789, year=2024, espn_s2=espn_s2, swid=swid)
+league = League(league_id=310285528, year=2024, espn_s2=espn_s2, swid=swid)
 
 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
