@@ -46,7 +46,7 @@ jobs:
                       print("version check failed:", e)
           PY
 
-      - name: Sanity: ensure CI script has no Service()
+      - name: "Sanity: ensure CI script has no Service()"
         run: |
           echo "==== first 60 lines of scrapewp_ci.py ===="
           nl -ba scrapewp_ci.py | sed -n '1,60p'
