@@ -3,3 +3,5 @@ espn-api
 requests
 beautifulsoup4
 lxml
+selenium
+chromedriver-autoinstaller
