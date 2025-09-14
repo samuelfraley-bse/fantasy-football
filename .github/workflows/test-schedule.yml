@@ -1,22 +1,37 @@
 name: Test Fantasy Report
 
 on:
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:        # manual trigger while testing
+  # schedule:               # uncomment when you want it on a timer
+  #   - cron: "*/30 * * * *"  # every 30 minutes (UTC)
+
+permissions:
+  contents: write           # allow pushing with GITHUB_TOKEN
 
 jobs:
   run-test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    # needed to push back to the same branch
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install dependencies
-        run: pip install espn-api pandas
+        run: |
+          python -m pip install --upgrade pip
+          # If you have requirements.txt, prefer this:
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install espn-api pandas
+          fi
 
       - name: Run score tracker twice with 15s pause
         run: |
@@ -24,7 +39,22 @@ jobs:
           sleep 15
           python score_tracker.py
 
-      - name: Upload scores.csv
+      - name: Commit scores.csv to repo
+        run: |
+          set -e
+          mkdir -p data
+          cp scores.csv data/scores_latest.csv
+          ts=$(date -u +%Y-%m-%dT%H-%M-%SZ)
+          cp scores.csv "data/scores_${ts}.csv"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/
+          git commit -m "Update scores: ${ts} [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Upload scores.csv (artifact, optional)
         uses: actions/upload-artifact@v4
         with:
           name: scores

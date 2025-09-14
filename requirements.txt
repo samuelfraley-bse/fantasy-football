@@ -1,0 +1,5 @@
+pandas
+espn-api
+requests
+beautifulsoup4
+lxml
