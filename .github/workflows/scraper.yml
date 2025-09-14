@@ -54,7 +54,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main   # <-- sync with remote
+          
+          # Stash CSV changes if present
+          git add fantasycast_ctw.csv
+          git stash push -m "scraper-update" || echo "Nothing to stash"
+          
+          git pull --rebase origin main
+          
+          # Re-apply stashed CSV
+          git stash pop || echo "Nothing to pop"
+          
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
+          
           git push origin HEAD:main
