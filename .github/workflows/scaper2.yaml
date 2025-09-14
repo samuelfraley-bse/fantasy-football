@@ -2,8 +2,19 @@ name: fantasy-scraperci
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
+    # Thursday Night Football: Fri 00:00–04:00 UTC (Thurs 8pm–midnight ET)
+    - cron: "*/15 0-4 * * 5"
+    # Sunday early games: Sun 17:00–20:00 UTC (1–4pm ET)
+    - cron: "*/15 17-20 * * 0"
+    # Sunday late games: Sun 20:00–23:59 UTC (4:25–8pm ET)
+    - cron: "*/15 20-23 * * 0"
+    # Sunday Night Football: Mon 00:00–04:00 UTC (Sun 8pm–midnight ET)
+    - cron: "*/15 0-4 * * 1"
+    # Monday Night Football: Tue 00:00–04:00 UTC (Mon 8pm–midnight ET)
+    - cron: "*/15 0-4 * * 2"
   workflow_dispatch:
+permissions:
+  contents: write   # allow GITHUB_TOKEN to push
 
 jobs:
   scrape:
@@ -14,6 +25,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
+          persist-credentials: true
+
+      - name: Show commit & tree
+        run: |
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          git log -1 --pretty=fuller --stat
+          echo "---- repo tree ----"
+          find . -maxdepth 3 -type f -print
 
       - name: Show commit & tree
         run: |
@@ -46,7 +65,11 @@ jobs:
                       print("version check failed:", e)
           PY
 
+<<<<<<< HEAD
       - name: Sanity: ensure CI script has no Service()
+=======
+      - name: "Sanity: ensure CI script has no Service()"
+>>>>>>> 0ef1d04c0ba4435071939634a4d1c28610ee188d
         run: |
           echo "==== first 60 lines of scrapewp_ci.py ===="
           nl -ba scrapewp_ci.py | sed -n '1,60p'
@@ -58,8 +81,8 @@ jobs:
 
       - name: Commit results
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
           git push
