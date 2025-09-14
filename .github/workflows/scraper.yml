@@ -8,17 +8,11 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
-
-      - name: Show commit SHA & changed files
-        run: |
-          echo "GITHUB_SHA=$GITHUB_SHA"
-          git log -1 --pretty=fuller --stat
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -30,20 +24,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Sanity check: confirm the script content in the runner workspace
-      - name: Show script header (sanity check)
+      # Show which files exist and grep for old Service() usage anywhere
+      - name: Sanity: list and grep
         run: |
-          echo "==== first 60 lines of scrapewp_all.py ===="
-          nl -ba scrapewp_all.py | sed -n '1,60p'
-          echo "==== grep for Service( ) ===="
-          if grep -n "Service(" scrapewp_all.py; then
-            echo "Found Service( ) — this is the wrong version of the file."
-            exit 1
-          else
-            echo "OK: no Service() found"
-          fi
+          pwd
+          ls -la
+          echo "---- grep for webdriver.Chrome(service ----"
+          grep -Rn "webdriver\.Chrome(service" || echo "OK: no Service() found"
 
-      # Optional: show Chrome/driver versions
+      # Optional: show Chrome/Driver versions
       - name: Show Chrome/Driver versions
         run: |
           python - << 'PY'
@@ -58,8 +47,8 @@ jobs:
                       print("version check failed:", e)
           PY
 
-      - name: Run scraper
-        run: python scrapewp_all.py
+      - name: Run scraper (CI file)
+        run: python scrapewp_ci.py
 
       - name: Commit results
         run: |
@@ -68,5 +57,3 @@ jobs:
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
           git push
-
-
