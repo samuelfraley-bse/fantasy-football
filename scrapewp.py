@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import (
@@ -9,7 +8,7 @@ from selenium.common.exceptions import (
 )
 import time, re, csv, datetime, os
 import tempfile
-import chromedriver_autoinstaller
+import chromedriver_autoinstaller  # pip install chromedriver-autoinstaller
 
 URL = "https://fantasy.espn.com/football/fantasycast?leagueId=31028552"
 OUTFILE = "fantasycast_ctw.csv"
@@ -20,20 +19,27 @@ opts.add_argument("--window-size=1400,1000")
 opts.add_argument("--disable-gpu")
 opts.add_argument("--no-default-browser-check")
 opts.add_argument("--no-first-run")
-opts.add_argument("--lang=es-ES")   # Spain locale
-opts.add_argument("--headless=new")  # headless works locally & in CI
+opts.add_argument("--lang=es-ES")
+
+# headless flags for GitHub Actions (also fine locally)
+opts.add_argument("--headless=new")
 opts.add_argument("--disable-dev-shm-usage")
 opts.add_argument("--no-sandbox")
 
-# unique user data dir (prevents "already in use" errors in CI)
-opts.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
+# ✅ give Chrome a UNIQUE profile dir every run (prevents "already in use")
+unique_profile = tempfile.mkdtemp(prefix="selenium-profile-")
+opts.add_argument(f"--user-data-dir={unique_profile}")
 
-# ensure the correct ChromeDriver version is installed
+# ✅ ensure a matching ChromeDriver is present on the runner
 chromedriver_autoinstaller.install()
 
+# ❌ DO NOT pass Service() here — let Selenium auto-find the binary we just installed
 driver = webdriver.Chrome(options=opts)
 wait = WebDriverWait(driver, 30)
+
 driver.get(URL)
+print(f"[info] Using user-data-dir: {unique_profile}")
+
 
 # ----------- consent -----------
 def dismiss_consent(max_wait=25):
