@@ -7,14 +7,12 @@ from selenium.common.exceptions import (
     StaleElementReferenceException, TimeoutException, ElementClickInterceptedException
 )
 import time, re, csv, datetime, os
-import tempfile
 import chromedriver_autoinstaller  # pip install chromedriver-autoinstaller
 
 URL = "https://fantasy.espn.com/football/fantasycast?leagueId=31028552"
 OUTFILE = "fantasycast_ctw.csv"
 
 # ----------- setup -----------
-o# ----------- setup -----------
 opts = webdriver.ChromeOptions()
 opts.add_argument("--window-size=1400,1000")
 opts.add_argument("--disable-gpu")
@@ -22,7 +20,7 @@ opts.add_argument("--no-default-browser-check")
 opts.add_argument("--no-first-run")
 opts.add_argument("--lang=es-ES")
 
-# headless & CI-safe flags
+# headless-only setup (no user-data-dir)
 opts.add_argument("--headless=new")
 opts.add_argument("--disable-dev-shm-usage")
 opts.add_argument("--no-sandbox")
@@ -30,34 +28,14 @@ opts.add_argument("--remote-debugging-port=9222")
 opts.add_argument("--disable-browser-side-navigation")
 opts.add_argument("--disable-features=VizDisplayCompositor")
 
-# unique user data dir
-unique_profile = tempfile.mkdtemp(prefix="selenium-profile-")
-opts.add_argument(f"--user-data-dir={unique_profile}")
-
-chromedriver_autoinstaller.install()
-driver = webdriver.Chrome(options=opts)
-wait = WebDriverWait(driver, 30)
-
-print(f"[info] Using user-data-dir: {unique_profile}")
-driver.get(URL)
-# headless flags for GitHub Actions (also fine locally)
-opts.add_argument("--headless=new")
-opts.add_argument("--disable-dev-shm-usage")
-opts.add_argument("--no-sandbox")
-
-# ✅ give Chrome a UNIQUE profile dir every run (prevents "already in use")
-unique_profile = tempfile.mkdtemp(prefix="selenium-profile-")
-opts.add_argument(f"--user-data-dir={unique_profile}")
-
-# ✅ ensure a matching ChromeDriver is present on the runner
+# install correct driver
 chromedriver_autoinstaller.install()
 
-# ❌ DO NOT pass Service() here — let Selenium auto-find the binary we just installed
 driver = webdriver.Chrome(options=opts)
 wait = WebDriverWait(driver, 30)
 
 driver.get(URL)
-print(f"[info] Using user-data-dir: {unique_profile}")
+print("[info] Headless Chrome started successfully")
 
 
 # ----------- consent -----------
