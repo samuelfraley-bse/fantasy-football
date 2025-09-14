@@ -8,6 +8,8 @@ from selenium.common.exceptions import (
     StaleElementReferenceException, TimeoutException, ElementClickInterceptedException
 )
 import time, re, csv, datetime, os
+import tempfile
+import chromedriver_autoinstaller
 
 URL = "https://fantasy.espn.com/football/fantasycast?leagueId=31028552"
 OUTFILE = "fantasycast_ctw.csv"
@@ -19,12 +21,17 @@ opts.add_argument("--disable-gpu")
 opts.add_argument("--no-default-browser-check")
 opts.add_argument("--no-first-run")
 opts.add_argument("--lang=es-ES")   # Spain locale
-# uncomment below when running in GitHub Actions:
-# opts.add_argument("--headless=new")
-# opts.add_argument("--disable-dev-shm-usage")
-# opts.add_argument("--no-sandbox")
+opts.add_argument("--headless=new")  # headless works locally & in CI
+opts.add_argument("--disable-dev-shm-usage")
+opts.add_argument("--no-sandbox")
 
-driver = webdriver.Chrome(service=Service(), options=opts)
+# unique user data dir (prevents "already in use" errors in CI)
+opts.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
+
+# ensure the correct ChromeDriver version is installed
+chromedriver_autoinstaller.install()
+
+driver = webdriver.Chrome(options=opts)
 wait = WebDriverWait(driver, 30)
 driver.get(URL)
 
