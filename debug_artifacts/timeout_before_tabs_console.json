@@ -1,0 +1,56 @@
+[
+  {
+    "level": "WARNING",
+    "message": "https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js 0:227826 \"Deprecation warning: value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are discouraged. Please refer to http://momentjs.com/guides/#/warnings/js-date/ for more info.\\nArguments: \\n[0] _isAMomentObject: true, _isUTC: true, _useUTC: true, _l: undefined, _i: 2025/06/04 05:24:13.225 -0700, _f: undefined, _strict: undefined, _locale: [object Object]\\nError\\n    at a.createFromInputFallback (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:228261)\\n    at qn (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:253256)\\n    at Xn (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:257193)\\n    at Kn (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:257035)\\n    at Vn (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:256739)\\n    at $n (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:257576)\\n    at a.v [as utc] (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:225962)\\n    at R (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:1586630)\\n    at P.render (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:1589878)\\n    at mt (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:853074)\"",
+    "source": "console-api",
+    "timestamp": 1757855301927
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://lm-api-communication.fantasy.espn.com/apis/v3/games/ffl/seasons/2025/segments/0/leagues/31028552/communication/?view=kona_league_messageboard - Failed to load resource: the server responded with a status of 401 ()",
+    "source": "network",
+    "timestamp": 1757855303998
+  },
+  {
+    "level": "WARNING",
+    "message": "https://cdn.registerdisney.go.com/v4/OneID.js 1:177394 \"[OneID] [%s]: \" \"WARN\" \"`DisneyID` global object is soon to be deprecated. Use `OneID` instead.\"",
+    "source": "console-api",
+    "timestamp": 1757855304517
+  },
+  {
+    "level": "WARNING",
+    "message": "https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js 18:437417 \"[GPT] Invalid arguments: SizeMappingBuilder.addSize([0, 0], [[0, 0]]). All zero-area slot sizes were removed.\\nhttps://goo.gle/gpt-message#151\"",
+    "source": "console-api",
+    "timestamp": 1757855304517
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js 18:437463 \"[GPT] Error in googletag.defineSlot: Cannot create slot /21783347309/espn.com/fantasy/football/fantasycast. Div element \\\"ad-slot-exclusions-385081\\\" is already associated with another slot: /21783347309/espn.com/fantasy/football/fantasycast.\\nhttps://goo.gle/gpt-message#28\"",
+    "source": "console-api",
+    "timestamp": 1757855304517
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js 18:425237 \"Exception in queued GPT command\" TypeError: Cannot read properties of null (reading 'addService')\n    at Ce.ht [as defineGPTSlot] (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:3947877)\n    at https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:3939672\n    at Array.forEach (<anonymous>)\n    at It (https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:5465161)\n    at https://cdn1.espn.net/kona/03f4cc4199bb-1.316/_next/static/commons/main-8fb22f176495e18f67b5.js:1:3939654\n    at nv.push (https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js:19:425152)\n    at nv.<anonymous> (https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js:19:91330)\n    at ov (https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js:19:131306)\n    at qE.j (https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js:19:597065)\n    at sE (https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js:19:196237)",
+    "source": "console-api",
+    "timestamp": 1757855304517
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202509090101/pubads_impl.js 18:437463 \"[GPT] Exception in googletag.cmd function: TypeError: Cannot read properties of null (reading 'addService').\\nhttps://goo.gle/gpt-message#30\"",
+    "source": "console-api",
+    "timestamp": 1757855304517
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://ups.analytics.yahoo.com/ups/58813/fed?gpp_sid=-1&gdpr=true&gdpr_consent=CQXvmmAQXvmmAAcABBENB8FsAP_gAEPgAChQLmtR_G__bWlr-b73aftkeYxP9_hr7sQxBgbJk24FzLvW_JwXx2E5NAzatqIKmRIAu3TBIQNlHJDURVCgKIgVryDMaEyUoTNKJ6BkiFMRI2NYCFxvm4pjeQCY5vr99lc1mB-N7dr82dzyy6hHn3a5_2S1WJCdIYetDfv8ZBKT-9IEd_x8v4v4_F7pE2-eS1n_pGvp6D9-Yns_dBmx9_baffzPn__rl_e7X_vf_n37v943H77v____f_-7_-C5gAJhoVEEZZECIRKBhBAgAUFYQAUCAIAAEgaICAEwYFOQMAF1hMgBACgAGCAEAAIMAAQAACQAIRABQAQCAACAQKAAMACAICABgYAAwAWIgEAAIDoGKYEEAgWACRmVQaYEoACQQEtlQgkAwIK4QhFngEECImCgAABAAKAgAAeCwEJJASsSCALiCaAAAgAACiBAgRSNmAIKAzRaC8GT6MjTAMHzBMkpkGQBMEZGSbEJvwmHjkKIUEOQGxSzAAAA.f_wACHwAAAAA&v=1&url=https%3A%2F%2Ffantasy.espn.com%2Ffootball%2Ffantasycast - Failed to load resource: the server responded with a status of 400 ()",
+    "source": "network",
+    "timestamp": 1757855305105
+  },
+  {
+    "level": "WARNING",
+    "message": "https://fantasy.espn.com/football/fantasycast?leagueId=31028552 - [GroupMarkerNotSet(crbug.com/242999)!:A0002800EC320000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1757855305636
+  }
+]
