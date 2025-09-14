@@ -2,8 +2,8 @@ name: fantasy-scraper
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # every 15 minutes
-  workflow_dispatch:         # allow manual trigger
+    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
+  workflow_dispatch:         # allow manual trigger from GitHub UI
 
 jobs:
   scrape:
@@ -23,6 +23,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # --- Debug step 1: confirm script header and no Service() call ---
+      - name: Show script header (sanity check)
+        run: |
+          head -n 40 scrapewp_all.py
+          echo "--- grep for Service() ---"
+          grep -n "Service(" scrapewp_all.py || echo "OK: no Service() found"
+
+      # --- Debug step 2: show Chrome + chromedriver versions ---
+      - name: Show Chrome/Driver versions
+        run: |
+          python - << 'PY'
+          import shutil, subprocess
+          for exe in ["google-chrome", "chromium-browser", "chromium", "chromedriver"]:
+              path = shutil.which(exe)
+              if path:
+                  print(f"{exe} -> {path}")
+                  try:
+                      print(subprocess.check_output([exe, "--version"], text=True).strip())
+                  except Exception as e:
+                      print("version check failed:", e)
+          PY
+
       - name: Run scraper
         run: python scrapewp_all.py
 
@@ -33,3 +55,4 @@ jobs:
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
           git push
+
