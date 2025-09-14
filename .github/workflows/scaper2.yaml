@@ -1,18 +1,26 @@
-name: fantasy-scraper2
+name: fantasy-scraperci
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
   workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
+
+      - name: Show commit & tree
+        run: |
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          git log -1 --pretty=fuller --stat
+          echo "---- repo tree ----"
+          find . -maxdepth 3 -type f -print
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,15 +32,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Show which files exist and grep for old Service() usage anywhere
-      - name: Sanity: list and grep
-        run: |
-          pwd
-          ls -la
-          echo "---- grep for webdriver.Chrome(service ----"
-          grep -Rn "webdriver\.Chrome(service" || echo "OK: no Service() found"
-
-      # Optional: show Chrome/Driver versions
       - name: Show Chrome/Driver versions
         run: |
           python - << 'PY'
@@ -46,6 +45,13 @@ jobs:
                   except Exception as e:
                       print("version check failed:", e)
           PY
+
+      - name: Sanity: ensure CI script has no Service()
+        run: |
+          echo "==== first 60 lines of scrapewp_ci.py ===="
+          nl -ba scrapewp_ci.py | sed -n '1,60p'
+          echo "==== grep for Service( ) in CI script ===="
+          grep -n "webdriver\.Chrome(service" scrapewp_ci.py && exit 1 || echo "OK: no Service() found"
 
       - name: Run scraper (CI file)
         run: python scrapewp_ci.py
