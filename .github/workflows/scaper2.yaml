@@ -65,11 +65,7 @@ jobs:
                       print("version check failed:", e)
           PY
 
-<<<<<<< HEAD
-      - name: Sanity: ensure CI script has no Service()
-=======
       - name: "Sanity: ensure CI script has no Service()"
->>>>>>> 0ef1d04c0ba4435071939634a4d1c28610ee188d
         run: |
           echo "==== first 60 lines of scrapewp_ci.py ===="
           nl -ba scrapewp_ci.py | sed -n '1,60p'
@@ -83,6 +79,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main   # <-- sync with remote
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
-          git push
+          git push origin HEAD:main
