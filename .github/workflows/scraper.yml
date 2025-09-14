@@ -2,8 +2,8 @@ name: fantasy-scraper
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
-  workflow_dispatch:         # allow manual trigger from GitHub UI
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Show commit SHA & changed files
+        run: |
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          git log -1 --pretty=fuller --stat
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -23,14 +30,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # --- Debug step 1: confirm script header and no Service() call ---
+      # Sanity check: confirm the script content in the runner workspace
       - name: Show script header (sanity check)
         run: |
-          head -n 40 scrapewp_all.py
-          echo "--- grep for Service() ---"
-          grep -n "Service(" scrapewp_all.py || echo "OK: no Service() found"
+          echo "==== first 60 lines of scrapewp_all.py ===="
+          nl -ba scrapewp_all.py | sed -n '1,60p'
+          echo "==== grep for Service( ) ===="
+          if grep -n "Service(" scrapewp_all.py; then
+            echo "Found Service( ) — this is the wrong version of the file."
+            exit 1
+          else
+            echo "OK: no Service() found"
+          fi
 
-      # --- Debug step 2: show Chrome + chromedriver versions ---
+      # Optional: show Chrome/driver versions
       - name: Show Chrome/Driver versions
         run: |
           python - << 'PY'
@@ -55,4 +68,5 @@ jobs:
           git add fantasycast_ctw.csv
           git commit -m "Update win probabilities [skip ci]" || echo "No changes"
           git push
+
 
