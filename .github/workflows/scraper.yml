@@ -2,9 +2,17 @@ name: fantasy-scraper
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    # Thursday Night Football: Fri 00:00–04:59 UTC (Thurs 8pm–midnight ET)
+    - cron: "0,15,30,45 0-4 * * 5"
+    # Sunday early games: Sun 17:00–20:59 UTC (1–4pm ET)
+    - cron: "0,15,30,45 17-20 * * 0"
+    # Sunday late games: Sun 20:00–23:59 UTC (4:25–8pm ET)
+    - cron: "0,15,30,45 20-23 * * 0"
+    # Sunday Night Football: Mon 00:00–04:59 UTC (Sun 8pm–midnight ET)
+    - cron: "0,15,30,45 0-4 * * 1"
+    # Monday Night Football: Tue 00:00–04:59 UTC (Mon 8pm–midnight ET)
+    - cron: "0,15,30,45 0-4 * * 2"
   workflow_dispatch:
-
 jobs:
   scrape:
     runs-on: ubuntu-latest
